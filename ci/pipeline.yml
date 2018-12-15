@@ -1,0 +1,27 @@
+resources:
+- name: concourse-ci
+  type: git
+  source:
+    branch: master
+    uri: https://github.com/leki75/concourse-ci.git
+
+- name: app
+  type: git
+  source:
+    branch: master
+    private_key: ((github_id_rsa))
+    uri: git@github.com:hortonworks/texas.git
+
+jobs:
+- name: tox
+  plan:
+  - aggregate:
+    - get: concourse-ci
+    - get: app
+  - aggregate:
+    - task: flake8
+      file: concourse-ci/ci/tasks/flake8.yml
+    - task: mypy
+      file: concourse-ci/ci/tasks/mypy.yml
+    - task: pylint
+      file: concourse-ci/ci/tasks/pylint.yml

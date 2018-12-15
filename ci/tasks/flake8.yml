@@ -1,0 +1,15 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: leki75/tox
+
+inputs:
+  - name: app
+    path: app
+
+run:
+  dir: app
+  path: tox
+  args: ["-e", "flake8"]
